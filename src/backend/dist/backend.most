@@ -1,0 +1,129 @@
+// Version: 1.0.0
+type CartItemId__24389395 = CartItemId__853272832;
+type CartItemId__853272832 = Nat;
+type CartItem__1044444615 =
+  {
+    addedAt : Timestamp__962798663;
+    color : ?Text;
+    id : CartItemId__24389395;
+    imageUrl : ?Text;
+    price : Nat;
+    productId : ProductId__593108714;
+    productName : Text;
+    productTier : ProductTier__710376863;
+    quantity : Nat;
+    size : ?Text
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type OrderId__197865225 = Nat;
+type OrderId__521176343 = OrderId__197865225;
+type OrderItem__241319351 =
+  {
+    color : ?Text;
+    price : Nat;
+    productId : ProductId__903190681;
+    productName : Text;
+    productTier : ProductTier__710376863;
+    quantity : Nat;
+    size : ?Text
+  };
+type OrderStatus__272730104 = OrderStatus__393009242;
+type OrderStatus__393009242 =
+  {#cancelled; #completed; #paid; #pending; #processing; #shipped};
+type Order__141779993 =
+  {
+    createdAt : Timestamp__813860109;
+    id : OrderId__521176343;
+    items : [OrderItem__241319351];
+    orderNumber : Text;
+    status : OrderStatus__272730104;
+    stripePaymentIntentId : ?Text;
+    subtotal : Nat;
+    tax : Nat;
+    total : Nat;
+    updatedAt : Timestamp__813860109;
+    userId : UserId__41638867
+  };
+type ProductColor__819461792 = Text;
+type ProductId__160010635 = Nat;
+type ProductId__442338476 = ProductId__160010635;
+type ProductId__593108714 = ProductId__160010635;
+type ProductId__903190681 = ProductId__160010635;
+type ProductSize__416777216 = Text;
+type ProductTier__317275118 = ProductTier__710376863;
+type ProductTier__710376863 = {#average; #basic; #premium};
+type Product__750902660 =
+  {
+    colors : [ProductColor__819461792];
+    createdAt : Timestamp__77860887;
+    description : Text;
+    id : ProductId__442338476;
+    imageUrls : [Text];
+    name : Text;
+    price : Nat;
+    sizes : [ProductSize__416777216];
+    stock : Nat;
+    tier : ProductTier__317275118;
+    updatedAt : Timestamp__77860887
+  };
+type Timestamp__301639476 = Int;
+type Timestamp__77860887 = Timestamp__301639476;
+type Timestamp__813860109 = Timestamp__301639476;
+type Timestamp__962798663 = Timestamp__301639476;
+type UserId__158757552 = Principal;
+type UserId__41638867 = UserId__158757552;
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable cartItemCounter : {var value : Nat};
+  stable carts :
+    {
+      var root :
+        Node__46230540<UserId__158757552,
+                        List__415060402<CartItem__1044444615>>;
+      var size : Nat__490723111
+    };
+  stable orderCounter : {var value : Nat};
+  stable orders :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Order__141779993]];
+      var elementIndex : Nat__490723111
+    };
+  stable productCounter : {var value : Nat};
+  stable products :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Product__750902660]];
+      var elementIndex : Nat__490723111
+    };
+  stable userOrders :
+    {
+      var root :
+        Node__46230540<UserId__158757552, List__415060402<OrderId__197865225>>;
+      var size : Nat__490723111
+    }
+};

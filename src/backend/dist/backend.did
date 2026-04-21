@@ -1,0 +1,151 @@
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UserId = principal;
+type UpdateProductRequest = 
+ record {
+   colors: opt vec ProductColor;
+   description: opt text;
+   imageUrls: opt vec text;
+   name: opt text;
+   price: opt nat;
+   sizes: opt vec ProductSize;
+   stock: opt nat;
+   tier: opt ProductTier;
+ };
+type Timestamp = int;
+type ProductTier = 
+ variant {
+   average;
+   basic;
+   premium;
+ };
+type ProductSize = text;
+type ProductId = nat;
+type ProductColor = text;
+type Product = 
+ record {
+   colors: vec ProductColor;
+   createdAt: Timestamp;
+   description: text;
+   id: ProductId;
+   imageUrls: vec text;
+   name: text;
+   price: nat;
+   sizes: vec ProductSize;
+   stock: nat;
+   tier: ProductTier;
+   updatedAt: Timestamp;
+ };
+type OrderStatus = 
+ variant {
+   cancelled;
+   completed;
+   paid;
+   pending;
+   processing;
+   shipped;
+ };
+type OrderItemRequest = 
+ record {
+   color: opt text;
+   productId: ProductId;
+   quantity: nat;
+   size: opt text;
+ };
+type OrderItem = 
+ record {
+   color: opt text;
+   price: nat;
+   productId: ProductId;
+   productName: text;
+   productTier: ProductTier;
+   quantity: nat;
+   size: opt text;
+ };
+type OrderId = nat;
+type Order = 
+ record {
+   createdAt: Timestamp;
+   id: OrderId;
+   items: vec OrderItem;
+   orderNumber: text;
+   status: OrderStatus;
+   stripePaymentIntentId: opt text;
+   subtotal: nat;
+   tax: nat;
+   total: nat;
+   updatedAt: Timestamp;
+   userId: UserId;
+ };
+type CreateProductRequest = 
+ record {
+   colors: vec ProductColor;
+   description: text;
+   imageUrls: vec text;
+   name: text;
+   price: nat;
+   sizes: vec ProductSize;
+   stock: nat;
+   tier: ProductTier;
+ };
+type CreateOrderRequest = record {items: vec OrderItemRequest;};
+type CartItemId = nat;
+type CartItem = 
+ record {
+   addedAt: Timestamp;
+   color: opt text;
+   id: CartItemId;
+   imageUrl: opt text;
+   price: nat;
+   productId: ProductId;
+   productName: text;
+   productTier: ProductTier;
+   quantity: nat;
+   size: opt text;
+ };
+type Cart = 
+ record {
+   items: vec CartItem;
+   subtotal: nat;
+   tax: nat;
+   total: nat;
+   userId: UserId;
+ };
+type AddToCartRequest = 
+ record {
+   color: opt text;
+   productId: ProductId;
+   quantity: nat;
+   size: opt text;
+ };
+service : {
+  _initializeAccessControl: () -> ();
+  addToCart: (req: AddToCartRequest) -> (opt Cart);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  clearMyCart: () -> ();
+  createOrder: (req: CreateOrderRequest) -> (opt Order);
+  createProduct: (req: CreateProductRequest) -> (Product);
+  deleteProduct: (id: ProductId) -> (bool);
+  getCallerUserRole: () -> (UserRole) query;
+  getMyCart: () -> (Cart) query;
+  getMyOrders: () -> (vec Order) query;
+  getOrder: (id: OrderId) -> (opt Order) query;
+  getProduct: (id: ProductId) -> (opt Product) query;
+  isCallerAdmin: () -> (bool) query;
+  listAllOrders: () -> (vec Order) query;
+  listOrdersByStatus: (status: OrderStatus) -> (vec Order) query;
+  listProducts: () -> (vec Product) query;
+  listProductsByTier: (tier: ProductTier) -> (vec Product) query;
+  removeFromCart: (cartItemId: CartItemId) -> (Cart);
+  searchProducts: (searchTerm: text) -> (vec Product) query;
+  setOrderPaymentIntent: (id: OrderId, paymentIntentId: text) -> (opt Order);
+  updateCartItemQuantity: (cartItemId: CartItemId, quantity: nat) ->
+   (opt Cart);
+  updateOrderStatus: (id: OrderId, status: OrderStatus) -> (opt Order);
+  updateProduct: (id: ProductId, req: UpdateProductRequest) -> (opt Product);
+  updateStock: (id: ProductId, newStock: nat) -> (opt Product);
+}

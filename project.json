@@ -1,0 +1,23 @@
+{
+  "overview": "AD Fashions is an online shopping store for ladies' garments — kurtis, pants, and more — organized into three quality tiers: Premium, Average, and Basic. Shop, add to cart, and pay securely online.",
+  "features": [
+    "Three product tiers: Premium, Average, and Basic",
+    "Product catalog with images, sizes, and descriptions",
+    "Shopping cart with quantity control and order summary",
+    "Stripe online payment checkout",
+    "Admin dashboard to add and manage products",
+    "User accounts with order history",
+    "Mobile-friendly responsive design"
+  ],
+  "category": "e-commerce",
+  "tags": [
+    "fashion",
+    "ladies",
+    "shopping",
+    "e-commerce",
+    "kurtis",
+    "stripe",
+    "admin"
+  ],
+  "last_updated": "2026-04-21T16:00:05.048Z"
+}
